@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding Companion</title>
+  <link rel="stylesheet" href="sidepanel.css" />
+</head>
+<body>
+  <header>
+    <h1>Coding Companion</h1>
+  </header>
+
+  <p id="apiKeyStatus" class="hint" style="margin: 0 16px 8px;"></p>
+
+  <main class="panel">
+    <!-- Capture / analyze area -->
+    <section class="container" id="captureSection">
+      <h2 class="container-title">Coding</h2>
+      <div class="row">
+        <button id="captureBtn" class="primary">⤓ Capture code from page</button>
+      </div>
+      <p id="captureInfo" class="hint"></p>
+      <textarea id="codeBox" placeholder="Captured code appears here — or paste code manually. Highlight code on the page before capturing to analyze just that part." spellcheck="false"></textarea>
+      <div class="row actions">
+        <button id="debugBtn" class="action">Debug</button>
+        <button id="explainBtn" class="action">Explain</button>
+        <button id="optimizeBtn" class="action">Optimize</button>
+      </div>
+    </section>
+
+    <!-- LeetCode progress -->
+    <section class="container" id="leetcodeContainer">
+      <h2 class="container-title">LeetCode Progress</h2>
+      <div class="row leetcode-row">
+        <input type="text" id="leetcodeUsername" placeholder="LeetCode username" autocomplete="off" />
+        <button id="leetcodeTrackBtn" class="primary">Track</button>
+      </div>
+      <p id="leetcodeStatus" class="hint"></p>
+      <div id="leetcodeProgress" class="hidden">
+        <div class="lc-total">
+          <div class="lc-row-labels">
+            <span>Total solved</span>
+            <span><span id="lcSolved">0</span> / <span id="lcTotal">0</span></span>
+          </div>
+          <div class="lc-bar"><div class="lc-bar-fill" id="lcTotalFill"></div></div>
+        </div>
+        <div class="lc-breakdown">
+          <div class="lc-diff">
+            <div class="lc-row-labels small"><span>Easy</span><span id="lcEasyLabel">0/0</span></div>
+            <div class="lc-bar small"><div class="lc-bar-fill easy" id="lcEasyFill"></div></div>
+          </div>
+          <div class="lc-diff">
+            <div class="lc-row-labels small"><span>Medium</span><span id="lcMedLabel">0/0</span></div>
+            <div class="lc-bar small"><div class="lc-bar-fill medium" id="lcMedFill"></div></div>
+          </div>
+          <div class="lc-diff">
+            <div class="lc-row-labels small"><span>Hard</span><span id="lcHardLabel">0/0</span></div>
+            <div class="lc-bar small"><div class="lc-bar-fill hard" id="lcHardFill"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conversation -->
+    <section id="chat"></section>
+  </main>
+
+  <!-- Profile / mascot -->
+  <section class="container container-dark" id="profileContainer">
+    <div class="profile-info">
+      <div class="profile-name">Coding Companion</div>
+      <div class="profile-hint">Meet Coco!</div>
+    </div>
+    <img class="mascot" src="mascot.png" alt="Coco, the Code Companion mascot" />
+  </section>
+
+  <!-- Follow-up input -->
+  <footer>
+    <textarea id="followUp" rows="1" placeholder="Ask a follow-up question…"></textarea>
+    <button id="sendBtn" class="primary" title="Send">➤</button>
+    <button id="clearBtn" title="Clear conversation">🗑</button>
+  </footer>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

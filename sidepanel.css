@@ -1,0 +1,207 @@
+:root {
+  --bg: #E0FBFC;
+  --text: #253237;
+  --accent-light: #C2DFE3;
+  --accent: #9DB4C0;
+  --container: #5C6B73;
+  --container-text: #E0FBFC;
+  --dark: #253237;
+  --code-bg: #253237;
+  --border: rgba(37, 50, 55, 0.15);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 6px;
+  flex: 0 0 auto;
+}
+header h1 { font-size: 14px; font-weight: 600; margin: 0; color: var(--text); letter-spacing: 0.2px; }
+header button {
+  background: none; border: none; color: var(--text);
+  font-size: 16px; cursor: pointer; opacity: 0.6;
+}
+header button:hover { opacity: 1; }
+
+section#settings {
+  margin: 0 16px 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--container);
+  color: var(--container-text);
+}
+section#settings label { display: block; margin: 8px 0 4px; color: var(--accent-light); }
+section#settings input, section#settings select {
+  width: 100%; padding: 7px 8px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+section#settings button { margin-top: 10px; }
+
+main.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.container {
+  background: var(--container);
+  color: var(--container-text);
+  border-radius: 20px;
+  padding: 16px;
+  flex: 0 0 auto;
+}
+.container-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--container-text);
+  letter-spacing: 0.2px;
+}
+
+.row { display: flex; gap: 6px; }
+.row.actions { margin-top: 8px; }
+
+button.primary, button.action {
+  border: none; border-radius: 10px; padding: 9px 10px;
+  cursor: pointer; font-size: 12.5px; font-weight: 600;
+}
+button.primary { background: var(--accent); color: var(--dark); width: 100%; }
+button.primary:hover { background: var(--accent-light); }
+button.action {
+  flex: 1; background: var(--accent-light); color: var(--dark);
+  border: none;
+}
+button.action:hover { background: var(--accent); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#codeBox {
+  width: 100%; min-height: 90px; max-height: 200px; margin-top: 8px;
+  background: var(--code-bg); color: var(--bg);
+  border: none; border-radius: 10px;
+  padding: 8px; resize: vertical;
+  font: 12px/1.45 "SF Mono", Consolas, Menlo, monospace;
+}
+
+.hint { color: var(--container-text); opacity: 0.75; font-size: 11.5px; margin: 6px 0 0; }
+section#settings .hint { color: var(--accent-light); opacity: 1; }
+
+/* ---------- LeetCode progress ---------- */
+.leetcode-row input {
+  flex: 1; padding: 8px 9px; border-radius: 10px; border: none;
+  background: var(--bg); color: var(--text); font: inherit;
+}
+.leetcode-row button.primary { width: auto; padding: 8px 14px; }
+
+.lc-row-labels {
+  display: flex; justify-content: space-between; font-size: 11.5px;
+  margin-bottom: 4px; color: var(--container-text);
+}
+.lc-row-labels.small { font-size: 11px; opacity: 0.9; }
+
+.lc-total { margin-top: 12px; }
+.lc-bar {
+  height: 10px; border-radius: 6px; background: rgba(224, 251, 252, 0.25);
+  overflow: hidden;
+}
+.lc-bar.small { height: 7px; }
+.lc-bar-fill { height: 100%; background: var(--accent-light); border-radius: 6px 0 0 6px; transition: width 0.4s ease; }
+.lc-bar-fill.easy { background: var(--accent-light); }
+.lc-bar-fill.medium { background: var(--accent); }
+.lc-bar-fill.hard { background: var(--bg); }
+
+.lc-breakdown { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+
+/* ---------- Chat ---------- */
+#chat { flex: 1 1 auto; padding: 4px 0 12px; }
+
+.msg { margin-bottom: 12px; max-width: 100%; }
+.msg .who { font-size: 11px; color: var(--text); opacity: 0.6; margin-bottom: 3px; }
+.msg .bubble {
+  background: var(--accent-light); color: var(--text);
+  border-radius: 10px; padding: 9px 11px; overflow-wrap: break-word;
+}
+.msg.user .bubble { background: var(--accent); }
+
+.bubble pre {
+  background: var(--code-bg); color: var(--bg); border: none;
+  border-radius: 8px; padding: 8px; overflow-x: auto; margin: 8px 0;
+  font: 12px/1.45 "SF Mono", Consolas, Menlo, monospace;
+}
+.bubble code {
+  background: rgba(37, 50, 55, 0.12); border-radius: 4px; padding: 1px 4px;
+  font: 12px/1.45 "SF Mono", Consolas, Menlo, monospace;
+}
+.bubble pre code { background: none; padding: 0; }
+.bubble p { margin: 6px 0; }
+.bubble ul, .bubble ol { margin: 6px 0; padding-left: 20px; }
+.bubble h1, .bubble h2, .bubble h3 { font-size: 13.5px; margin: 10px 0 4px; }
+
+.error { color: #7a2e2e; }
+
+/* ---------- Profile / avatar ---------- */
+#profileContainer {
+  margin: 0 16px;
+  background: var(--bg);
+  padding: 8px 12px;
+  overflow: hidden;
+  height: 120px;
+  flex: 0 0 auto;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.mascot {
+  height: 100%;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.profile-info {
+  position: absolute; left: 14px; bottom: 12px;
+  text-align: left;
+}
+.profile-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.profile-hint { font-size: 11px; color: var(--text); opacity: 0.7; margin-top: 2px; }
+
+/* ---------- Footer ---------- */
+footer {
+  display: flex; gap: 6px; padding: 12px 16px;
+  flex: 0 0 auto;
+}
+footer textarea {
+  flex: 1; resize: none; background: var(--accent-light);
+  border: none; border-radius: 10px;
+  color: var(--text); padding: 8px; font: inherit; max-height: 100px;
+}
+footer button {
+  background: var(--accent); border: none; border-radius: 10px;
+  color: var(--dark); padding: 0 12px; cursor: pointer; font-size: 14px;
+}
+footer button#clearBtn { background: var(--container); color: var(--container-text); }
+
+.hidden { display: none !important; }
+
+.spinner {
+  display: inline-block; width: 12px; height: 12px;
+  border: 2px solid var(--accent-light); border-top-color: var(--dark);
+  border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: -2px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
