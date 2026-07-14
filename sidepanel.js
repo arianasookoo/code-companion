@@ -46,7 +46,7 @@ Be concise. Use markdown with fenced code blocks. If code appears truncated or i
 
 // ---------- init ----------
 (async function init() {
-  const stored = await chrome.storage.local.get(['leetcodeUsername', 'dailyGoal']);
+  const stored = await chrome.storage.local.get(['leetcodeUsername', 'dailyGoal', 'leetcodeOptOut']);
 
   await loadConfigFromEnv();
 
@@ -56,9 +56,10 @@ Be concise. Use markdown with fenced code blocks. If code appears truncated or i
   if (stored.leetcodeUsername) {
     $('settingsLcUsername').value = stored.leetcodeUsername;
     fetchLeetCodeStats(stored.leetcodeUsername, dailyGoal);
+  } else if (stored.leetcodeOptOut) {
+    showLeetCodeOptedOut();
   } else {
-    $('leetcodeStatus').textContent = 'Set your LeetCode username in Settings (⚙) to track progress.';
-    $('settings').classList.remove('hidden'); // first-time setup prompt
+    $('settings').classList.remove('hidden'); // first-time setup prompt, covers the panel
   }
 
   // Code pending from the context menu?
@@ -215,6 +216,11 @@ function pct(n, d) {
   return Math.max(0, Math.min(100, Math.round((n / d) * 100)));
 }
 
+function showLeetCodeOptedOut() {
+  lcProgress.classList.add('hidden');
+  lcStatus.textContent = 'LeetCode tracking is off. Enable it anytime from Settings (⚙).';
+}
+
 // ---------- user settings (LeetCode username + daily goal) ----------
 const settingsPanel = $('settings');
 
@@ -231,9 +237,16 @@ $('settingsSaveBtn').onclick = async () => {
     return;
   }
 
-  await chrome.storage.local.set({ leetcodeUsername: username, dailyGoal });
+  await chrome.storage.local.set({ leetcodeUsername: username, dailyGoal, leetcodeOptOut: false });
   $('settingsStatus').textContent = 'Saved.';
   fetchLeetCodeStats(username, dailyGoal);
+  settingsPanel.classList.add('hidden');
+};
+
+$('settingsSkipBtn').onclick = async () => {
+  await chrome.storage.local.set({ leetcodeOptOut: true });
+  $('settingsStatus').textContent = '';
+  showLeetCodeOptedOut();
   settingsPanel.classList.add('hidden');
 };
 

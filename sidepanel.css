@@ -26,8 +26,19 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px 6px;
+  padding: 14px 16px 10px;
   flex: 0 0 auto;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 header h1 {
   font-size: 14px;
@@ -40,16 +51,33 @@ header h1 {
 header button {
   background: none; border: none; color: var(--text);
   font-size: 16px; cursor: pointer; opacity: 0.6;
+  flex: 0 0 auto;
 }
 
 header button:hover { opacity: 1; }
 
+/* ---------- Settings modal (first-run LeetCode prompt / gear menu) ---------- */
 section#settings {
-  margin: 0 16px 12px;
-  padding: 12px;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(37, 50, 55, 0.55);
+}
+section#settings.hidden { display: none !important; }
+section#settings .settings-card {
+  width: 100%;
+  max-width: 320px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 16px;
   border-radius: 14px;
   background: var(--container);
   color: var(--container-text);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 section#settings label {
   display: block;
@@ -67,6 +95,21 @@ section#settings input, section#settings select {
 }
 
 section#settings button { margin-top: 10px; }
+
+button.link-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 4px;
+  background: none;
+  border: none;
+  color: var(--accent-light);
+  font-size: 11.5px;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.85;
+}
+button.link-btn:hover { opacity: 1; }
 
 main.panel {
   display: flex;
@@ -246,31 +289,14 @@ section#settings .hint {
 
 .error { color: #7a2e2e; }
 
-/* ---------- Profile / avatar ---------- */
-#profileContainer {
-  margin: 0 16px;
-  background: var(--bg);
-  padding: 8px 12px;
-  overflow: hidden;
-  height: 120px;
-  flex: 0 0 auto;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-}
-
+/* ---------- Header brand (mascot + title) ---------- */
 .mascot {
-  height: 100%;
+  height: 40px;
+  width: auto;
   object-fit: contain;
   flex: 0 0 auto;
 }
 
-.profile-info {
-  position: absolute; left: 14px; bottom: 12px;
-  text-align: left;
-}
-.profile-name { font-size: 13px; font-weight: 600; color: var(--text); }
 .profile-hint { font-size: 11px; color: var(--text); opacity: 0.7; margin-top: 2px; }
 
 /* ---------- Footer ---------- */

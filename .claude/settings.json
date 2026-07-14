@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(chromium-cli --session cocopanel)",
+      "Bash(npx --version)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\sooko\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-sooko-OneDrive-Documents-GitHub-code-companion\\\\6d5e0e84-0cbd-43ae-b552-66daab22e6b6\\\\scratchpad\")",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx playwright *)",
+      "Bash(pkill -f \"http.server 8934\")"
     ]
   }
 }

@@ -8,7 +8,13 @@
 </head>
 <body>
   <header>
-    <h1>Coding Companion</h1>
+    <div class="header-brand">
+      <img class="mascot" src="mascot.png" alt="Coco, the Code Companion mascot" />
+      <div class="header-titles">
+        <h1>Coding Companion</h1>
+        <div class="profile-hint">Meet Coco!</div>
+      </div>
+    </div>
     <button id="settingsToggleBtn" title="User settings">⚙</button>
   </header>
 
@@ -16,15 +22,19 @@
 
   <!-- User information / settings -->
   <section id="settings" class="hidden">
-    <h2 class="container-title">User Settings</h2>
-    <label for="settingsLcUsername">LeetCode username</label>
-    <input type="text" id="settingsLcUsername" placeholder="e.g. johndoe" autocomplete="off" />
-    <label for="settingsDailyGoal">Daily goal (problems/day)</label>
-    <input type="number" id="settingsDailyGoal" min="1" step="1" placeholder="5" />
-    <div class="row">
-      <button id="settingsSaveBtn" class="primary">Save</button>
+    <div class="settings-card">
+      <h2 class="container-title">Track your LeetCode progress</h2>
+      <p class="hint">Add your LeetCode username to see your daily goal and stats right here in the panel.</p>
+      <label for="settingsLcUsername">LeetCode username</label>
+      <input type="text" id="settingsLcUsername" placeholder="e.g. johndoe" autocomplete="off" />
+      <label for="settingsDailyGoal">Daily goal (problems/day)</label>
+      <input type="number" id="settingsDailyGoal" min="1" step="1" placeholder="5" />
+      <div class="row">
+        <button id="settingsSaveBtn" class="primary">Save</button>
+      </div>
+      <button id="settingsSkipBtn" class="link-btn">Not interested — don't ask again</button>
+      <p id="settingsStatus" class="hint"></p>
     </div>
-    <p id="settingsStatus" class="hint"></p>
   </section>
 
   <main class="panel">
@@ -88,15 +98,6 @@
     <!-- Conversation -->
     <section id="chat"></section>
   </main>
-
-  <!-- Profile / mascot -->
-  <section class="container container-dark" id="profileContainer">
-    <div class="profile-info">
-      <div class="profile-name">Coding Companion</div>
-      <div class="profile-hint">Meet Coco!</div>
-    </div>
-    <img class="mascot" src="mascot.png" alt="Coco, the Code Companion mascot" />
-  </section>
 
   <!-- Follow-up input -->
   <!-- <footer>
