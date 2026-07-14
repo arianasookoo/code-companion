@@ -29,11 +29,19 @@ header {
   padding: 14px 16px 6px;
   flex: 0 0 auto;
 }
-header h1 { font-size: 14px; font-weight: 600; margin: 0; color: var(--text); letter-spacing: 0.2px; }
+header h1 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
 header button {
   background: none; border: none; color: var(--text);
   font-size: 16px; cursor: pointer; opacity: 0.6;
 }
+
 header button:hover { opacity: 1; }
 
 section#settings {
@@ -43,11 +51,21 @@ section#settings {
   background: var(--container);
   color: var(--container-text);
 }
-section#settings label { display: block; margin: 8px 0 4px; color: var(--accent-light); }
-section#settings input, section#settings select {
-  width: 100%; padding: 7px 8px; border-radius: 6px;
-  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+section#settings label {
+  display: block;
+  margin: 8px 0 4px;
+  color: var(--accent-light);
 }
+
+section#settings input, section#settings select {
+  width: 100%;
+  padding: 7px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
 section#settings button { margin-top: 10px; }
 
 main.panel {
@@ -78,45 +96,119 @@ main.panel {
 .row.actions { margin-top: 8px; }
 
 button.primary, button.action {
-  border: none; border-radius: 10px; padding: 9px 10px;
-  cursor: pointer; font-size: 12.5px; font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 10px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
 }
-button.primary { background: var(--accent); color: var(--dark); width: 100%; }
+
+button.primary {
+  background: var(--accent);
+  color: var(--dark);
+  width: 100%;
+}
+
 button.primary:hover { background: var(--accent-light); }
 button.action {
-  flex: 1; background: var(--accent-light); color: var(--dark);
+  flex: 1;
+  background: var(--accent-light);
+  color: var(--dark);
   border: none;
 }
+
 button.action:hover { background: var(--accent); }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Capture container's primary button shares its row with the clear icon button */
+#captureSection .row button.primary { width: auto; flex: 1; }
+
+button.icon-btn {
+  flex: 0 0 auto;
+  width: 38px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-light);
+  color: var(--dark);
+  font-size: 14px;
+  cursor: pointer;
+}
+button.icon-btn:hover { background: var(--accent); }
 
 #codeBox {
-  width: 100%; min-height: 90px; max-height: 200px; margin-top: 8px;
-  background: var(--code-bg); color: var(--bg);
-  border: none; border-radius: 10px;
-  padding: 8px; resize: vertical;
+  width: 100%;
+  min-height: 90px;
+  max-height: 200px;
+  margin-top: 8px;
+  background: var(--code-bg);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  resize: vertical;
   font: 12px/1.45 "SF Mono", Consolas, Menlo, monospace;
 }
 
-.hint { color: var(--container-text); opacity: 0.75; font-size: 11.5px; margin: 6px 0 0; }
-section#settings .hint { color: var(--accent-light); opacity: 1; }
+.hint {
+  color: var(--container-text);
+  opacity: 0.75;
+  font-size: 11.5px;
+  margin: 6px 0 0;
+}
+
+section#settings .hint {
+  color: var(--accent-light);
+  opacity: 1;
+}
 
 /* ---------- LeetCode progress ---------- */
-.leetcode-row input {
-  flex: 1; padding: 8px 9px; border-radius: 10px; border: none;
-  background: var(--bg); color: var(--text); font: inherit;
+.lc-goal { display: flex; justify-content: center; margin-bottom: 16px; }
+.lc-ring-wrap { position: relative; width: 84px; height: 84px; }
+.lc-ring { width: 84px; height: 84px; transform: rotate(-90deg); }
+.lc-ring-track {
+  fill: none;
+  stroke: rgba(224, 251, 252, 0.25);
+  stroke-width: 8;
 }
-.leetcode-row button.primary { width: auto; padding: 8px 14px; }
+.lc-ring-progress {
+  fill: none;
+  stroke: var(--accent-light);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s ease;
+}
+.lc-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--container-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.lc-ring-sub { font-size: 9px; font-weight: 400; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.4px; }
 
 .lc-row-labels {
-  display: flex; justify-content: space-between; font-size: 11.5px;
-  margin-bottom: 4px; color: var(--container-text);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  margin-bottom: 4px;
+  color: var(--container-text);
 }
 .lc-row-labels.small { font-size: 11px; opacity: 0.9; }
 
 .lc-total { margin-top: 12px; }
 .lc-bar {
-  height: 10px; border-radius: 6px; background: rgba(224, 251, 252, 0.25);
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(224, 251, 252, 0.25);
   overflow: hidden;
 }
 .lc-bar.small { height: 7px; }
@@ -195,7 +287,6 @@ footer button {
   background: var(--accent); border: none; border-radius: 10px;
   color: var(--dark); padding: 0 12px; cursor: pointer; font-size: 14px;
 }
-footer button#clearBtn { background: var(--container); color: var(--container-text); }
 
 .hidden { display: none !important; }
 

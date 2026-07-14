@@ -32,6 +32,7 @@ const captureInfo = $('captureInfo');
 
 // Model is fixed in this file — not user-selectable.
 const OPENAI_MODEL_FALLBACK = 'gpt-4o-mini';
+const DEFAULT_DAILY_GOAL = 5;
 let settings = { apiKey: '', model: OPENAI_MODEL_FALLBACK };
 let messages = []; // OpenAI-format conversation history (excludes system prompt)
 let busy = false;
@@ -45,13 +46,19 @@ Be concise. Use markdown with fenced code blocks. If code appears truncated or i
 
 // ---------- init ----------
 (async function init() {
-  const stored = await chrome.storage.local.get(['leetcodeUsername']);
+  const stored = await chrome.storage.local.get(['leetcodeUsername', 'dailyGoal']);
 
   await loadConfigFromEnv();
 
+  const dailyGoal = stored.dailyGoal || DEFAULT_DAILY_GOAL;
+  $('settingsDailyGoal').value = dailyGoal;
+
   if (stored.leetcodeUsername) {
-    $('leetcodeUsername').value = stored.leetcodeUsername;
-    fetchLeetCodeStats(stored.leetcodeUsername);
+    $('settingsLcUsername').value = stored.leetcodeUsername;
+    fetchLeetCodeStats(stored.leetcodeUsername, dailyGoal);
+  } else {
+    $('leetcodeStatus').textContent = 'Set your LeetCode username in Settings (⚙) to track progress.';
+    $('settings').classList.remove('hidden'); // first-time setup prompt
   }
 
   // Code pending from the context menu?
@@ -143,18 +150,11 @@ function runAction(kind) {
 // ---------- LeetCode progress ----------
 const lcStatus = $('leetcodeStatus');
 const lcProgress = $('leetcodeProgress');
+const lcRing = $('lcRingProgress');
+const LC_RING_CIRCUMFERENCE = 2 * Math.PI * 34; // matches the r=34 circle in sidepanel.html
 
-$('leetcodeTrackBtn').onclick = () => {
-  const username = $('leetcodeUsername').value.trim();
-  if (!username) { lcStatus.textContent = 'Enter a LeetCode username.'; return; }
-  chrome.storage.local.set({ leetcodeUsername: username });
-  fetchLeetCodeStats(username);
-};
-$('leetcodeUsername').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') { e.preventDefault(); $('leetcodeTrackBtn').click(); }
-});
-
-async function fetchLeetCodeStats(username) {
+async function fetchLeetCodeStats(username, dailyGoal) {
+  const goal = dailyGoal || DEFAULT_DAILY_GOAL;
   lcStatus.innerHTML = '<span class="spinner"></span> Loading progress…';
   lcProgress.classList.add('hidden');
   try {
@@ -179,6 +179,8 @@ async function fetchLeetCodeStats(username) {
     $('lcHardLabel').textContent = `${hard}/${hardTotal}`;
     $('lcHardFill').style.width = pct(hard, hardTotal) + '%';
 
+    await updateDailyGoalRing(solved, goal);
+
     lcProgress.classList.remove('hidden');
     lcStatus.textContent = `Synced for ${username}.`;
   } catch (e) {
@@ -186,10 +188,54 @@ async function fetchLeetCodeStats(username) {
   }
 }
 
+// The LeetCode API only reports lifetime totals, so "solved today" is tracked
+// locally: the first sync of each day snapshots the current total as a
+// baseline, and today's count is the delta above that baseline.
+async function updateDailyGoalRing(totalSolved, goal) {
+  const today = new Date().toISOString().slice(0, 10);
+  const { dailyBaseline } = await chrome.storage.local.get('dailyBaseline');
+
+  let baseline = dailyBaseline;
+  if (!baseline || baseline.date !== today || totalSolved < baseline.solved) {
+    baseline = { date: today, solved: totalSolved };
+    await chrome.storage.local.set({ dailyBaseline: baseline });
+  }
+
+  const solvedToday = Math.max(0, totalSolved - baseline.solved);
+  const ringPct = pct(solvedToday, goal);
+
+  $('lcGoalSolved').textContent = solvedToday;
+  $('lcGoalTarget').textContent = goal;
+  lcRing.style.strokeDasharray = `${LC_RING_CIRCUMFERENCE}`;
+  lcRing.style.strokeDashoffset = `${LC_RING_CIRCUMFERENCE * (1 - ringPct / 100)}`;
+}
+
 function pct(n, d) {
   if (!d) return 0;
   return Math.max(0, Math.min(100, Math.round((n / d) * 100)));
 }
+
+// ---------- user settings (LeetCode username + daily goal) ----------
+const settingsPanel = $('settings');
+
+$('settingsToggleBtn').onclick = () => settingsPanel.classList.toggle('hidden');
+
+$('settingsSaveBtn').onclick = async () => {
+  const username = $('settingsLcUsername').value.trim();
+  const goal = parseInt($('settingsDailyGoal').value, 10);
+  const dailyGoal = Number.isFinite(goal) && goal > 0 ? goal : DEFAULT_DAILY_GOAL;
+  $('settingsDailyGoal').value = dailyGoal;
+
+  if (!username) {
+    $('settingsStatus').textContent = 'Enter a LeetCode username.';
+    return;
+  }
+
+  await chrome.storage.local.set({ leetcodeUsername: username, dailyGoal });
+  $('settingsStatus').textContent = 'Saved.';
+  fetchLeetCodeStats(username, dailyGoal);
+  settingsPanel.classList.add('hidden');
+};
 
 // ---------- follow-up chat ----------
 $('sendBtn').onclick = sendFollowUp;
@@ -209,10 +255,9 @@ function sendFollowUp() {
   sendToAI(content, text);
 }
 
-$('clearBtn').onclick = () => {
-  messages = [];
-  chatEl.innerHTML = '';
-  captureInfo.textContent = 'Conversation cleared.';
+$('clearCodeBtn').onclick = () => {
+  codeBox.value = '';
+  captureInfo.textContent = 'Code box cleared.';
 };
 
 // ---------- OpenAI (streaming) ----------

@@ -9,9 +9,23 @@
 <body>
   <header>
     <h1>Coding Companion</h1>
+    <button id="settingsToggleBtn" title="User settings">⚙</button>
   </header>
 
   <p id="apiKeyStatus" class="hint" style="margin: 0 16px 8px;"></p>
+
+  <!-- User information / settings -->
+  <section id="settings" class="hidden">
+    <h2 class="container-title">User Settings</h2>
+    <label for="settingsLcUsername">LeetCode username</label>
+    <input type="text" id="settingsLcUsername" placeholder="e.g. johndoe" autocomplete="off" />
+    <label for="settingsDailyGoal">Daily goal (problems/day)</label>
+    <input type="number" id="settingsDailyGoal" min="1" step="1" placeholder="5" />
+    <div class="row">
+      <button id="settingsSaveBtn" class="primary">Save</button>
+    </div>
+    <p id="settingsStatus" class="hint"></p>
+  </section>
 
   <main class="panel">
     <!-- Capture / analyze area -->
@@ -19,6 +33,7 @@
       <h2 class="container-title">Coding</h2>
       <div class="row">
         <button id="captureBtn" class="primary">⤓ Capture code from page</button>
+        <button id="clearCodeBtn" class="icon-btn" title="Clear code box">🗑</button>
       </div>
       <p id="captureInfo" class="hint"></p>
       <textarea id="codeBox" placeholder="Captured code appears here — or paste code manually. Highlight code on the page before capturing to analyze just that part." spellcheck="false"></textarea>
@@ -32,12 +47,20 @@
     <!-- LeetCode progress -->
     <section class="container" id="leetcodeContainer">
       <h2 class="container-title">LeetCode Progress</h2>
-      <div class="row leetcode-row">
-        <input type="text" id="leetcodeUsername" placeholder="LeetCode username" autocomplete="off" />
-        <button id="leetcodeTrackBtn" class="primary">Track</button>
-      </div>
       <p id="leetcodeStatus" class="hint"></p>
       <div id="leetcodeProgress" class="hidden">
+        <div class="lc-goal">
+          <div class="lc-ring-wrap">
+            <svg viewBox="0 0 80 80" class="lc-ring">
+              <circle class="lc-ring-track" cx="40" cy="40" r="34"></circle>
+              <circle class="lc-ring-progress" id="lcRingProgress" cx="40" cy="40" r="34"></circle>
+            </svg>
+            <div class="lc-ring-label">
+              <span><span id="lcGoalSolved">0</span>/<span id="lcGoalTarget">5</span></span>
+              <div class="lc-ring-sub">today</div>
+            </div>
+          </div>
+        </div>
         <div class="lc-total">
           <div class="lc-row-labels">
             <span>Total solved</span>
@@ -79,7 +102,6 @@
   <footer>
     <textarea id="followUp" rows="1" placeholder="Ask a follow-up question…"></textarea>
     <button id="sendBtn" class="primary" title="Send">➤</button>
-    <button id="clearBtn" title="Clear conversation">🗑</button>
   </footer>
 
   <script src="sidepanel.js"></script>
