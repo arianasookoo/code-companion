@@ -4,7 +4,11 @@
   "version": "1.0.0",
   "description": "AI code companion: captures code from the page and helps you debug, explain, and optimize it using OpenAI.",
   "permissions": ["sidePanel", "activeTab", "scripting", "storage", "contextMenus"],
-  "host_permissions": ["https://api.openai.com/*", "https://alfa-leetcode-api.onrender.com/*"],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://alfa-leetcode-api.onrender.com/*",
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js"
   },
